@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoiseMapServerAsp", "NoiseMapServerAsp\NoiseMapServerAsp.csproj", "{B2801072-9E24-4131-9DD3-4C1229CCCFCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{9CF3DF91-6785-427D-AA81-051C626AB0FF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B2801072-9E24-4131-9DD3-4C1229CCCFCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2801072-9E24-4131-9DD3-4C1229CCCFCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2801072-9E24-4131-9DD3-4C1229CCCFCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2801072-9E24-4131-9DD3-4C1229CCCFCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF3DF91-6785-427D-AA81-051C626AB0FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF3DF91-6785-427D-AA81-051C626AB0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF3DF91-6785-427D-AA81-051C626AB0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF3DF91-6785-427D-AA81-051C626AB0FF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE2BC531-4E67-4A0B-887C-D4217EB25479}
+	EndGlobalSection
+EndGlobal
