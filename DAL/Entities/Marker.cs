@@ -11,5 +11,7 @@ namespace DAL.Entities
         public int Id { get; set; }
         public Сoordinate Сoordinate { get; set; }
         public MarkerType MarkerType { get; set; }
+
+        public String Title { get; set; }
     }
 }
