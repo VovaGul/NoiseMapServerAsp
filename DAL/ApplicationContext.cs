@@ -25,7 +25,7 @@ namespace DAL
                 new Marker
                 {
                     MarkerType = MarkerType.Checked,
-                    Сoordinate = new Сoordinate
+                    Сoordinate = new Coordinate
                     { 
                         X = "-122.09702256272297",
                         Y = "37.40292274053587"
@@ -34,7 +34,7 @@ namespace DAL
                 new Marker
                 {
                     MarkerType = MarkerType.Empty,
-                    Сoordinate = new Сoordinate
+                    Сoordinate = new Coordinate
                     {
                         X = "-110.09702256272297",
                         Y = "37.40292274053587"

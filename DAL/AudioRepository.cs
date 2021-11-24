@@ -12,7 +12,7 @@ namespace DAL
     {
         public Stream GetAudio(Marker mark)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

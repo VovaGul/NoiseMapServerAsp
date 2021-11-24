@@ -9,7 +9,7 @@ namespace DAL.Entities
     public class Marker
     {
         public int Id { get; set; }
-        public Сoordinate Сoordinate { get; set; }
+        public Coordinate Сoordinate { get; set; }
         public MarkerType MarkerType { get; set; }
 
         public String Title { get; set; }
