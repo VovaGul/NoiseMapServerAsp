@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class Сoordinate
+    public class Coordinate
     {
         public int Id { get; set; }
         public string X { get; set; }

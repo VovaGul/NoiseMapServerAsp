@@ -2,6 +2,7 @@
 using DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -34,7 +35,7 @@ namespace NoiseMapServerAsp.Controllers
             return _applicationContext.Markers.Where(marker => marker.Id == id).Single();
         }
 
-        [HttpPost("audio/{id}")]
+        [HttpGet("audio/{id}")]
         public async Task GetAudio(int id)
         {
             var marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();

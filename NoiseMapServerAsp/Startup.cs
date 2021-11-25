@@ -26,9 +26,9 @@ namespace NoiseMapServerAsp
             services.AddDbContext<ApplicationContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<AudioRepository>();
             services.AddTransient<MarkersController>();
             services.AddControllers();
-            services.AddSingleton<AudioRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
