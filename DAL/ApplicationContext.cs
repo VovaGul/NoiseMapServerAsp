@@ -25,20 +25,24 @@ namespace DAL
                 new Marker
                 {
                     MarkerType = MarkerType.Checked,
-                    Сoordinate = new Coordinate
+                    Coordinate = new Coordinate
                     { 
                         X = "-122.09702256272297",
                         Y = "37.40292274053587"
-                    }
+                    },
+                    Title = "Panda Express",
+                    AudioStatus = AudioStatus.Recorded
                 },
                 new Marker
                 {
                     MarkerType = MarkerType.Empty,
-                    Сoordinate = new Coordinate
+                    Coordinate = new Coordinate
                     {
                         X = "-110.09702256272297",
                         Y = "37.40292274053587"
-                    }
+                    },
+                    Title = "Cinema",
+                    AudioStatus = AudioStatus.Unrecorded
                 }
             };
 

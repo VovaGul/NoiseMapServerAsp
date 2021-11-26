@@ -3,6 +3,7 @@ using DAL.Entities;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace NoiseMapServerAsp.Controllers
             return _applicationContext.Markers.Where(marker => marker.Id == id).Single();
         }
 
-        [HttpPost("audio/{id}")]
+        [HttpGet("audio/{id}")]
         public async Task GetAudio(int id)
         {
             var marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();
@@ -50,6 +51,33 @@ namespace NoiseMapServerAsp.Controllers
                 await stream.CopyToAsync(Response.Body);
             }
             stream.Dispose();
+        }
+
+
+        [HttpPost("add")]
+        public void PostMarker(Marker marker)
+        {
+            _applicationContext.Markers.Add(marker);
+            _applicationContext.SaveChanges();
+        }
+
+        [HttpPost("edit/{id}")]
+        public void UpdateMarker(Marker marker)
+        {
+            _applicationContext.Markers.Update(marker);
+            _applicationContext.SaveChanges();
+        }
+
+        [HttpPost("delete/{id}")]
+        public void DeleteMarker(int id)
+        {
+            Marker marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();
+            if (marker != null)
+            {
+                _applicationContext.Markers.Remove(marker);
+                _applicationContext.SaveChanges();
+            }
+            
         }
     }
 }
