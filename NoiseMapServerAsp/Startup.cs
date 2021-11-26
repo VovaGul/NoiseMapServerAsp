@@ -12,6 +12,7 @@ namespace NoiseMapServerAsp
 {
     public class Startup
     {
+        public const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -29,6 +30,18 @@ namespace NoiseMapServerAsp
             services.AddTransient<MarkersController>();
             services.AddControllers();
             services.AddSingleton<AudioRepository>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder
+                                      .WithOrigins("http://localhost:1337")
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader();
+                                  });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,13 +54,12 @@ namespace NoiseMapServerAsp
 
             app.UseRouting();
 
+            app.UseCors(MyAllowSpecificOrigins);
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
-                //endpoints.MapGet("/", async context =>
-                //{
-                //    await context.Response.WriteAsync("Hello World!");
-                //});
+                endpoints.MapDefaultControllerRoute()
+                    .RequireCors(MyAllowSpecificOrigins);
             });
         }
     }

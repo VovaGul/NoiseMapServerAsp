@@ -1,5 +1,6 @@
 ﻿using DAL;
 using DAL.Entities;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace NoiseMapServerAsp.Controllers
 
         //GET api/markers/all
         [HttpGet("all")]
+        [EnableCors(Startup.MyAllowSpecificOrigins)]
         public List<Marker> GetAll()
         {
             return _applicationContext.Markers.ToList();

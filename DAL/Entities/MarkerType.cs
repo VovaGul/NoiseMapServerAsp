@@ -8,8 +8,8 @@ namespace DAL.Entities
 {
     public enum MarkerType
     {
-        Empty,
-        Unchecked,
-        Checked
+        Empty = 0,
+        Unchecked = 1,
+        Checked = 2
     }
 }
