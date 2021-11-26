@@ -12,5 +12,6 @@ namespace DAL.Entities
         public Coordinate Coordinate { get; set; }
         public MarkerType MarkerType { get; set; }
         public String Title { get; set; }
+        public AudioStatus AudioStatus { get; set; }
     }
 }

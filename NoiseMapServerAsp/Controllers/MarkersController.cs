@@ -50,5 +50,32 @@ namespace NoiseMapServerAsp.Controllers
             }
             stream.Dispose();
         }
+
+
+        [HttpPost("add")]
+        public void PostMarker(Marker marker)
+        {
+            _applicationContext.Markers.Add(marker);
+            _applicationContext.SaveChanges();
+        }
+
+        [HttpPost("edit/{id}")]
+        public void UpdateMarker(Marker marker)
+        {
+            _applicationContext.Markers.Update(marker);
+            _applicationContext.SaveChanges();
+        }
+
+        [HttpPost("delete/{id}")]
+        public void DeleteMarker(int id)
+        {
+            Marker marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();
+            if (marker != null)
+            {
+                _applicationContext.Markers.Remove(marker);
+                _applicationContext.SaveChanges();
+            }
+            
+        }
     }
 }

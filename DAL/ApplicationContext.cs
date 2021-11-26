@@ -30,7 +30,8 @@ namespace DAL
                         X = "-122.09702256272297",
                         Y = "37.40292274053587"
                     },
-                    Title = "Panda Express"
+                    Title = "Panda Express",
+                    AudioStatus = AudioStatus.Recorded
                 },
                 new Marker
                 {
@@ -40,7 +41,8 @@ namespace DAL
                         X = "-110.09702256272297",
                         Y = "37.40292274053587"
                     },
-                    Title = "Cinema"
+                    Title = "Cinema",
+                    AudioStatus = AudioStatus.Unrecorded
                 }
             };
 
