@@ -12,7 +12,9 @@ namespace DAL
     {
         public Stream GetAudio(Marker mark)
         {
-            throw new NotImplementedException();
+            var path = String.Format("D:\\Projects\\CSharp\\Audio\\{0}.mp3", mark.Id);
+            FileStream file = File.Open(path, FileMode.Open);
+            return file;
         }
     }
 }

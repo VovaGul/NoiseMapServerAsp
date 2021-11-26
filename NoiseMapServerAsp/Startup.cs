@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NoiseMapServerAsp.Controllers;
+using NoiseMapServerAsp.Hubs;
 
 namespace NoiseMapServerAsp
 {
@@ -27,6 +28,7 @@ namespace NoiseMapServerAsp
             services.AddDbContext<ApplicationContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<AudioRepository>();
             services.AddTransient<MarkersController>();
             services.AddControllers();
             services.AddSingleton<AudioRepository>();
@@ -42,6 +44,7 @@ namespace NoiseMapServerAsp
                                       .AllowAnyHeader();
                                   });
             });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +63,11 @@ namespace NoiseMapServerAsp
             {
                 endpoints.MapDefaultControllerRoute()
                     .RequireCors(MyAllowSpecificOrigins);
+                endpoints.MapHub<ClientConnectionHub>("/update");
+                //endpoints.MapGet("/", async context =>
+                //{
+                //    await context.Response.WriteAsync("Hello World!");
+                //});
             });
         }
     }
