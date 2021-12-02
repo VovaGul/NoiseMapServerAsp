@@ -267,12 +267,9 @@ class MapboxManager {
     }
 
     rejectCurrentFeature() {
-        const oldCurrnetFeature = currentFeature
-        this.featureRepository.deleteFeature(currentFeature)
+        currentFeature.type = FeatureType.empty
 
-        oldCurrnetFeature.type = FeatureType.empty
-
-        this.featureRepository.setFeature(oldCurrnetFeature)
+        this.featureRepository.updateFeature(currentFeature)
     }
 
     deleteCurrentFeature() {
@@ -285,12 +282,6 @@ const serverFeatureRepository = new ServerFeatureRepository()
 const mapboxManager = new MapboxManager(serverFeatureRepository)
 
 mapboxManager.run()
-
-
-const button = document.getElementById('setEmptyPointButton');
-button.addEventListener('click', function (e) {
-    console.log('button was clicked');
-});
 
 function setEmptyFeature() {
     mapboxManager.setEmptyFeature()
