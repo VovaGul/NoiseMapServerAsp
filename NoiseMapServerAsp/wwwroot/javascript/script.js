@@ -38,7 +38,9 @@ class ServerFeatureRepository {
         return {
             markerId: marker.id,
             coordinates: [marker.x, marker.y],
-            type: markerType
+            type: markerType,
+            audioStatus: marker.audioStatus,
+            title: marker.title
         }
     }
 
@@ -69,7 +71,9 @@ class ServerFeatureRepository {
             id: feature.markerId,
             x: feature.coordinates[0].toString(),
             y: feature.coordinates[1].toString(),
-            markerType: markerTypeValue
+            markerType: markerTypeValue,
+            title: feature.title,
+            audioStatus: feature.audioStatus
         }
     }
 
