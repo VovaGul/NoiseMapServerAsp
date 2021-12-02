@@ -12,13 +12,9 @@ namespace DAL
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
-
-            SetDefaultSeed();
         }
 
-        private void SetDefaultSeed()
+        public void SetDefaultSeed()
         {
             var defaultMarkers = new List<Marker>
             {
@@ -51,8 +47,6 @@ namespace DAL
                 Markers.Add(defaultMarker);
                 SaveChanges();
             }
-
-            var a = Markers.ToList();
         }
     }
 }

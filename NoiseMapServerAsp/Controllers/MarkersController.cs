@@ -55,10 +55,11 @@ namespace NoiseMapServerAsp.Controllers
 
 
         [HttpPost("add")]
-        public void PostMarker(Marker marker)
+        public Marker PostMarker(Marker marker)
         {
-            _applicationContext.Markers.Add(marker);
+            var createdMarker = _applicationContext.Add(marker).Entity;
             _applicationContext.SaveChanges();
+            return createdMarker;
         }
 
         [HttpPost("edit/{id}")]
