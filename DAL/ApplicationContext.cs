@@ -9,9 +9,9 @@ namespace DAL
     {
         public DbSet<Marker> Markers { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options)
-            : base(options)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            optionsBuilder.UseSqlite("Filename=NoiseMap.db");
         }
 
         public void SetDefaultSeed()
@@ -21,22 +21,16 @@ namespace DAL
                 new Marker
                 {
                     MarkerType = MarkerType.Checked,
-                    Coordinate = new Coordinate
-                    { 
-                        X = "-122.09702256272297",
-                        Y = "37.40292274053587"
-                    },
+                    X = "-122.09702256272297",
+                    Y = "37.40292274053587",
                     Title = "Panda Express",
                     AudioStatus = AudioStatus.Recorded
                 },
                 new Marker
                 {
                     MarkerType = MarkerType.Empty,
-                    Coordinate = new Coordinate
-                    {
-                        X = "-110.09702256272297",
-                        Y = "37.40292274053587"
-                    },
+                    X = "-110.09702256272297",
+                    Y = "37.40292274053587",
                     Title = "Cinema",
                     AudioStatus = AudioStatus.Unrecorded
                 }

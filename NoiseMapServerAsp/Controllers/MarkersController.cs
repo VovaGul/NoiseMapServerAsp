@@ -2,6 +2,7 @@
 using DAL.Entities;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -62,14 +63,14 @@ namespace NoiseMapServerAsp.Controllers
             return createdMarker;
         }
 
-        [HttpPost("edit/{id}")]
+        [HttpPut("edit/{id}")]
         public void UpdateMarker(Marker marker)
         {
             _applicationContext.Markers.Update(marker);
             _applicationContext.SaveChanges();
         }
 
-        [HttpPost("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public void DeleteMarker(int id)
         {
             Marker marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();
