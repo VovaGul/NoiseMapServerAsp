@@ -33,6 +33,14 @@ namespace DAL
                     Y = "37.40292274053587",
                     Title = "Cinema",
                     AudioStatus = AudioStatus.Unrecorded
+                },
+                new Marker
+                {
+                    MarkerType = MarkerType.Unchecked,
+                    X = "-121.09702256272297",
+                    Y = "30.40292274053587",
+                    Title = "Cinema",
+                    AudioStatus = AudioStatus.Recorded
                 }
             };
 

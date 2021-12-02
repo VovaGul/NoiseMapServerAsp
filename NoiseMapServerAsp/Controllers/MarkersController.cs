@@ -87,7 +87,7 @@ namespace NoiseMapServerAsp.Controllers
             return createdMarker;
         }
 
-        [HttpPut("edit/{id}")]
+        [HttpPut("edit")]
         public void UpdateMarker(Marker marker)
         {
             _applicationContext.Markers.Update(marker);

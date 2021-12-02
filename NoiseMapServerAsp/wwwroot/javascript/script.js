@@ -66,6 +66,7 @@ class ServerFeatureRepository {
     featureToMarker(feature) {
         var markerTypeValue = this.featureTypeToMarkerType(feature.type)
         return {
+            id: feature.markerId,
             x: feature.coordinates[0].toString(),
             y: feature.coordinates[1].toString(),
             markerType: markerTypeValue
@@ -90,6 +91,24 @@ class ServerFeatureRepository {
         let answerMarker = await response.json();
         var answerFeature = this.markerToFeature(answerMarker)
         return answerFeature
+    }
+
+    updateFeature(feature) {
+        var marker = this.featureToMarker(feature)
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify(marker);
+
+        var requestOptions = {
+            method: 'PUT',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://localhost:44395/api/markers/edit", requestOptions)
     }
 
     delete(feature) {
@@ -170,6 +189,12 @@ class FeatureRepository {
             })
     }
 
+    updateFeature(feature) {
+        this.serverFeatureRepository.updateFeature(feature)
+        this.mapFeatureRepository.deleteCurrentMarker()
+        this.mapFeatureRepository.setFeature(feature)
+    }
+
     deleteFeature(feature) {
         this.serverFeatureRepository.delete(feature)
         this.mapFeatureRepository.deleteCurrentMarker()
@@ -232,12 +257,9 @@ class MapboxManager {
     }
 
     acceptCurrentFeature() {
-        const oldCurrnetFeature = currentFeature
-        this.featureRepository.deleteFeature(currentFeature)
+        currentFeature.type = FeatureType.checked
 
-        oldCurrnetFeature.type = FeatureType.checked
-
-        this.featureRepository.setFeature(oldCurrnetFeature)
+        this.featureRepository.updateFeature(currentFeature)
     }
 
     rejectCurrentFeature() {
@@ -269,7 +291,6 @@ button.addEventListener('click', function (e) {
 function setEmptyFeature() {
     mapboxManager.setEmptyFeature()
 }
-
 
 function listenCurrentFeature() {
     mapboxManager.listenCurrentFeature()
