@@ -256,7 +256,7 @@ class MapboxManager {
     }
 
     listenCurrentFeature() {
-        var audio = new Audio(currentFeature.audioLink);
+        var audio = new Audio("https://localhost:44395/api/markers/audio/" + currentFeature.markerId);
         audio.play();
     }
 
