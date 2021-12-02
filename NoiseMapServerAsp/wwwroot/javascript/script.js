@@ -25,18 +25,21 @@ class ServerFeatureRepository {
     markersToFeatures(markers) {
         let features = []
         for (const marker of markers) {
-            var markerType = this.intToFeatureType(marker.markerType)
-
-            let feature = {
-                markerId: marker.id,
-                coordinates: [marker.x, marker.y],
-                type: markerType
-            }
-
+            let feature = this.markerToFeature(marker)
             features.push(feature)
         }
 
         return features
+    }
+
+    markerToFeature(marker) {
+        var markerType = this.intToFeatureType(marker.markerType)
+
+        return {
+            markerId: marker.id,
+            coordinates: [marker.x, marker.y],
+            type: markerType
+        }
     }
 
     intToFeatureType(valueFeatureType) {
@@ -60,33 +63,33 @@ class ServerFeatureRepository {
         }
     }
 
-    //featureToMarker(feature) {
-    //    var markerType = featureTypeToMarkerType(feature.type)
-    //    return {
-    //        x = feature.coordinates[0],
-    //        y = feature.coordinates[1],
-    //        markerType = markerType
-    //    }
-    //}
+    featureToMarker(feature) {
+        var markerTypeValue = this.featureTypeToMarkerType(feature.type)
+        return {
+            x: feature.coordinates[0].toString(),
+            y: feature.coordinates[1].toString(),
+            markerType: markerTypeValue
+        }
+    }
 
-    setFeature(feature) {
-        //var marker = this.featureToMarker(feature)
-        //var headers = new Headers();
-        //headers.append("Content-Type", "application/json");
+    async setFeature(feature) {
+        var marker = this.featureToMarker(feature)
+        var headers = new Headers();
+        headers.append("Content-Type", "application/json");
 
-        //var raw = JSON.stringify(marker);
+        var raw = JSON.stringify(marker);
 
-        //var requestOptions = {
-        //    method: 'POST',
-        //    headers: headers,
-        //    body: raw,
-        //    redirect: 'follow'
-        //};
+        var requestOptions = {
+            method: 'POST',
+            headers: headers,
+            body: raw,
+            redirect: 'follow'
+        };
 
-        //let response = await fetch("https://localhost:44395/api/markers/add", requestOptions)
-        //let marker = await response.json();
-
-        //return marker
+        let response = await fetch("https://localhost:44395/api/markers/add", requestOptions)
+        let answerMarker = await response.json();
+        var answerFeature = this.markerToFeature(answerMarker)
+        return answerFeature
     }
 
     delete(feature) {
@@ -155,8 +158,11 @@ class FeatureRepository {
     }
 
     setFeature(feature) {
-        var createdFeature = this.serverFeatureRepository.setFeature(feature)
-        this.mapFeatureRepository.setFeature(createdFeature)
+        this.serverFeatureRepository
+            .setFeature(feature)
+            .then((createdFeature) => {
+                this.mapFeatureRepository.setFeature(createdFeature)
+            })
     }
 
     deleteFeature(feature) {
