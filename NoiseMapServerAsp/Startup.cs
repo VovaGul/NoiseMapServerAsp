@@ -19,12 +19,6 @@ namespace NoiseMapServerAsp
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            using (var client = new ApplicationContext())
-            {
-                client.Database.EnsureDeleted();
-                client.Database.EnsureCreated();
-                client.SetDefaultSeed();
-            }
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
