@@ -29,7 +29,7 @@ namespace DAL
                 new Marker
                 {
                     MarkerType = MarkerType.Empty,
-                    X = "-110.09702256272297",
+                    X = "-121.09702256272297",
                     Y = "37.40292274053587",
                     Title = "Cinema",
                     AudioStatus = AudioStatus.Unrecorded

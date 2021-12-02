@@ -1,11 +1,13 @@
 ﻿using DAL;
 using DAL.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace NoiseMapServerAsp.Controllers
@@ -15,9 +17,10 @@ namespace NoiseMapServerAsp.Controllers
     public class MarkersController : ControllerBase
     {
         private readonly ApplicationContext _applicationContext;
+        protected readonly IWebHostEnvironment _hostingEnvironment;
         private readonly AudioRepository _audioRepository;
 
-        public MarkersController(ApplicationContext applicationContext, AudioRepository audioRepository)
+        public MarkersController(ApplicationContext applicationContext, IWebHostEnvironment hostingEnvironment, AudioRepository audioRepository)
         {
             _applicationContext = applicationContext;
             _audioRepository = audioRepository;
@@ -54,6 +57,29 @@ namespace NoiseMapServerAsp.Controllers
             stream.Dispose();
         }
 
+        [HttpPost("audio/add")]
+        public async void PostAudio()
+        {
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count > 0)
+            {
+                var file = files[0];
+                String path = Directory.GetParent(Directory.GetCurrentDirectory()) + "/Audio/" + file.FileName;
+                System.Console.WriteLine(path);
+                try
+                {
+                    var fileStream = new FileStream(path, FileMode.Create);
+                    using (fileStream)
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.Message);
+                }
+            }
+        }
 
         [HttpPost("add")]
         public Marker PostMarker(Marker marker)
