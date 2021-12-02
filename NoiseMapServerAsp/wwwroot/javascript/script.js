@@ -93,7 +93,12 @@ class ServerFeatureRepository {
     }
 
     delete(feature) {
+        var requestOptions = {
+            method: 'DELETE',
+            redirect: 'follow'
+        };
 
+        fetch("https://localhost:44395/api/markers/delete/" + feature.markerId, requestOptions)
     }
 }
 
