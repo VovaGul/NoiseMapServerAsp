@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public enum MarkerType
+    public class Coordinate
     {
-        Empty = 0,
-        Unchecked = 1,
-        Checked = 2
+        public int Id { get; set; }
+        public string X { get; set; }
+        public string Y{ get; set; }
     }
 }

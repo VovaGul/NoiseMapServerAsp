@@ -1,6 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,7 @@ namespace NoiseMapServerAsp.Controllers
 
         //GET api/markers/all
         [HttpGet("all")]
+        [EnableCors(Startup.MyAllowSpecificOrigins)]
         public List<Marker> GetAll()
         {
             return _applicationContext.Markers.ToList();
@@ -80,10 +82,11 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPost("add")]
-        public void PostMarker(Marker marker)
+        public Marker PostMarker(Marker marker)
         {
-            _applicationContext.Markers.Add(marker);
+            var createdMarker = _applicationContext.Markers.Add(marker).Entity;
             _applicationContext.SaveChanges();
+            return createdMarker;
         }
 
         [HttpPut("edit/{id}")]

@@ -9,11 +9,6 @@ namespace DAL
     {
         public DbSet<Marker> Markers { get; set; }
 
-        //public ApplicationContext(DbContextOptions<ApplicationContext> options)
-        //    : base(options)
-        //{
-        //}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Filename=NoiseMap.db");
