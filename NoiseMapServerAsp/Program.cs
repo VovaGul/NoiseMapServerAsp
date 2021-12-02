@@ -33,7 +33,7 @@ namespace NoiseMapServerAsp
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError($"UserDomainName: {Environment.UserDomainName} UserName: {Environment.UserName}");
-                logger.LogError(ex, "An error occurred while seeding the database.");
+                logger.LogError(ex);
                 throw;
             }
         }
