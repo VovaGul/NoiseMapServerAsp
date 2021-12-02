@@ -16,9 +16,26 @@ namespace NoiseMapServerAsp
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
-            SetDefaultSeed(host);
-            host.Run();
+            var host = CreateHostBuilder(args)
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.AddFile(hostingContext.Configuration.GetSection("Logging"));
+                })
+                .Build();
+            try
+            {
+                SetDefaultSeed(host);
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                var scope = host.Services.CreateScope();
+                var services = scope.ServiceProvider;
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError($"UserDomainName: {Environment.UserDomainName} UserName: {Environment.UserName}");
+                logger.LogError(ex, "An error occurred while seeding the database.");
+                throw;
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
