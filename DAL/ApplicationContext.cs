@@ -9,38 +9,33 @@ namespace DAL
     {
         public DbSet<Marker> Markers { get; set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options)
-            : base(options)
-        {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
+        //public ApplicationContext(DbContextOptions<ApplicationContext> options)
+        //    : base(options)
+        //{
+        //}
 
-            SetDefaultSeed();
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Filename=NoiseMap.db");
         }
 
-        private void SetDefaultSeed()
+        public void SetDefaultSeed()
         {
             var defaultMarkers = new List<Marker>
             {
                 new Marker
                 {
                     MarkerType = MarkerType.Checked,
-                    Coordinate = new Coordinate
-                    { 
-                        X = "-122.09702256272297",
-                        Y = "37.40292274053587"
-                    },
+                    X = "-122.09702256272297",
+                    Y = "37.40292274053587",
                     Title = "Panda Express",
                     AudioStatus = AudioStatus.Recorded
                 },
                 new Marker
                 {
                     MarkerType = MarkerType.Empty,
-                    Coordinate = new Coordinate
-                    {
-                        X = "-110.09702256272297",
-                        Y = "37.40292274053587"
-                    },
+                    X = "-110.09702256272297",
+                    Y = "37.40292274053587",
                     Title = "Cinema",
                     AudioStatus = AudioStatus.Unrecorded
                 }
@@ -51,8 +46,6 @@ namespace DAL
                 Markers.Add(defaultMarker);
                 SaveChanges();
             }
-
-            var a = Markers.ToList();
         }
     }
 }
