@@ -12,7 +12,7 @@ namespace DAL
     {
         public Stream GetAudio(Marker mark)
         {
-            var path = String.Format("D:\\Projects\\CSharp\\Audio\\{0}.mp3", mark.Id);
+            var path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).ToString(), "Audio", $"{mark.Id}.mp3");
             FileStream file = File.Open(path, FileMode.Open);
             return file;
         }

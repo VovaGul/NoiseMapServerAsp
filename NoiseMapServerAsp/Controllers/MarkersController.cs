@@ -24,12 +24,10 @@ namespace NoiseMapServerAsp.Controllers
         {
             _applicationContext = applicationContext;
             _audioRepository = audioRepository;
-
         }
 
         //GET api/markers/all
         [HttpGet("all")]
-        [EnableCors(Startup.MyAllowSpecificOrigins)]
         public List<Marker> GetAll()
         {
             return _applicationContext.Markers.ToList();
@@ -89,7 +87,7 @@ namespace NoiseMapServerAsp.Controllers
             return createdMarker;
         }
 
-        [HttpPut("edit/{id}")]
+        [HttpPut("edit")]
         public void UpdateMarker(Marker marker)
         {
             _applicationContext.Markers.Update(marker);

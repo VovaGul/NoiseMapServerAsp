@@ -13,7 +13,6 @@ namespace NoiseMapServerAsp
 {
     public class Startup
     {
-        public const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -21,34 +20,17 @@ namespace NoiseMapServerAsp
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationContext>(options =>
-            // options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddEntityFrameworkSqlite().AddDbContext<ApplicationContext>();
 
             services.AddSingleton<AudioRepository>();
-            //services.AddTransient<MarkersController>();
             services.AddControllers();
             services.AddSingleton<AudioRepository>();
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                  builder =>
-                                  {
-                                      builder
-                                      .WithOrigins("http://localhost:1337")
-                                      .AllowAnyMethod()
-                                      .AllowAnyHeader();
-                                  });
-            });
             services.AddSignalR();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -56,14 +38,14 @@ namespace NoiseMapServerAsp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute()
-                    .RequireCors(MyAllowSpecificOrigins);
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ClientConnectionHub>("/update");
             });
         }
