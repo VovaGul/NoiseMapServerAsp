@@ -8,6 +8,11 @@ namespace NoiseMapServerAsp.Hubs
 {
     public class ClientConnectionHub : Hub
     {
+        public override async Task OnConnectedAsync()
+        {
+            Console.WriteLine(Context.ConnectionId);
+        }
+
         public async Task OnMarkerUpdated(int markerId)
         {
             await Clients.Others.SendAsync("UpdateMarker", markerId);
@@ -22,5 +27,6 @@ namespace NoiseMapServerAsp.Hubs
         {
             await Clients.Others.SendAsync("AddMarker", markerId);
         }
+
     }
 }
