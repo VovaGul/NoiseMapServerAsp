@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using NoiseMapServerAsp.Hubs;
 
 namespace NoiseMapServerAsp.Controllers
 {
@@ -18,12 +19,15 @@ namespace NoiseMapServerAsp.Controllers
     {
         private readonly ApplicationContext _applicationContext;
         protected readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly ClientConnectionHub _clientConnectionHub;
         private readonly AudioRepository _audioRepository;
 
-        public MarkersController(ApplicationContext applicationContext, IWebHostEnvironment hostingEnvironment, AudioRepository audioRepository)
+        public MarkersController(ApplicationContext applicationContext, IWebHostEnvironment hostingEnvironment,
+            AudioRepository audioRepository, ClientConnectionHub clientConnectionHub)
         {
             _applicationContext = applicationContext;
             _audioRepository = audioRepository;
+            _clientConnectionHub = clientConnectionHub;
         }
 
         //GET api/markers/all
@@ -80,10 +84,11 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPost("add")]
-        public Marker PostMarker(Marker marker)
+        public async Task<Marker> PostMarker(Marker marker)
         {
-            var createdMarker = _applicationContext.Markers.Add(marker).Entity;
+            var createdMarker = (await _applicationContext.Markers.AddAsync(marker)).Entity;
             _applicationContext.SaveChanges();
+            await _clientConnectionHub.OnMarkerAdded(marker.Id);
             return createdMarker;
         }
 

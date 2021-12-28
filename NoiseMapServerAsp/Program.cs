@@ -1,3 +1,4 @@
+using BAL;
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -49,10 +50,8 @@ namespace NoiseMapServerAsp
         {
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
-            var applicationContext = services.GetRequiredService<ApplicationContext>();
-            applicationContext.Database.EnsureDeleted();
-            applicationContext.Database.EnsureCreated();
-            applicationContext.SetDefaultSeed();
+            var markersSeed = services.GetRequiredService<MarkersSeed>();
+            markersSeed.SetSeed(200);
         }
     }
 }

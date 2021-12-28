@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoiseMapServerAsp", "NoiseM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{9CF3DF91-6785-427D-AA81-051C626AB0FF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BAL", "BAL\BAL.csproj", "{373CF319-6B3D-4C6A-B87B-C2F6C5A1BCDB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9CF3DF91-6785-427D-AA81-051C626AB0FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CF3DF91-6785-427D-AA81-051C626AB0FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CF3DF91-6785-427D-AA81-051C626AB0FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{373CF319-6B3D-4C6A-B87B-C2F6C5A1BCDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{373CF319-6B3D-4C6A-B87B-C2F6C5A1BCDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{373CF319-6B3D-4C6A-B87B-C2F6C5A1BCDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{373CF319-6B3D-4C6A-B87B-C2F6C5A1BCDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

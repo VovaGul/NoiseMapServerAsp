@@ -1,3 +1,5 @@
+using BAL;
+using BAL.Models;
 using DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +28,23 @@ namespace NoiseMapServerAsp
 
             services.AddSingleton<AudioRepository>();
             services.AddControllers();
-            services.AddSingleton<AudioRepository>();
+            services.AddSingleton(_ =>
+            {
+                return new Square
+                {
+                    StartCoordinate = new Coordinate
+                    {
+                        X = 60.541696,
+                        Y = 56.871670
+                    },
+                    EndCoordinate = new Coordinate 
+                    {
+                        X = 60.640916,
+                        Y = 56.817108
+                    },
+                };
+            });
+            services.AddScoped<MarkersSeed>();
 
             services.AddSignalR();
         }
