@@ -1,13 +1,7 @@
 ﻿using DAL.Entities;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NoiseMapServerAsp.Models;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace NoiseMapServerAsp.Controllers
@@ -33,52 +27,23 @@ namespace NoiseMapServerAsp.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel objLoginModel)
         {
-            var user = await _userManager.FindByEmailAsync(objLoginModel.UserName);
-            if (user == null)
+            var result = await _signInManager.PasswordSignInAsync(objLoginModel.UserName,
+                                  objLoginModel.Password, true, lockoutOnFailure: true);
+            if (result.Succeeded)
             {
-                //Add logic here to display some message to user
-                ViewBag.Message = "Invalid Credential";
-                return View(objLoginModel);
-            }
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, objLoginModel.Password, false);
-
-            if (!result.Succeeded)
-            {
-                //Add logic here to display some message to user
-                ViewBag.Message = "Invalid Credential";
-                return View(objLoginModel);
+                return LocalRedirect(objLoginModel.ReturnUrl);
             }
             else
             {
-                //A claim is a statement about a subject by an issuer and
-                //represent attributes of the subject that are useful in the context of authentication and authorization operations.
-                //var claims = new List<Claim> {
-                //    new Claim(ClaimTypes.NameIdentifier,Convert.ToString(user.Id)),
-                //    new Claim(ClaimTypes.Name, user.UserName),
-                //};
-                var claims = new List<Claim>() {
-                    new Claim(ClaimTypes.NameIdentifier,Convert.ToString(user.Id)),
-                    new Claim(ClaimTypes.Name,user.UserName),
-                    new Claim("FavoriteDrink","Tea")
-                    };
-                //Initialize a new instance of the ClaimsIdentity with the claims and authentication scheme
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                //Initialize a new instance of the ClaimsPrincipal with ClaimsIdentity
-                var principal = new ClaimsPrincipal(identity);
-                //SignInAsync is a Extension method for Sign in a principal for the specified scheme.
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                    principal, new AuthenticationProperties() { IsPersistent = objLoginModel.RememberLogin });
-
-                return LocalRedirect(objLoginModel.ReturnUrl);
+                ViewBag.Message = "Invalid Credential";
+                return View(objLoginModel);
             }
+
         }
 
         public async Task<IActionResult> LogOut()
         {
-            //SignOutAsync is Extension method for SignOut
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            //Redirect to home page
+            await _signInManager.SignOutAsync();
             return LocalRedirect("/");
         }
     }
