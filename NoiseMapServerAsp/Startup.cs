@@ -3,14 +3,12 @@ using DAL.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NoiseMapServerAsp.Controllers;
 using NoiseMapServerAsp.Hubs;
+using System;
 
 namespace NoiseMapServerAsp
 {
@@ -25,20 +23,27 @@ namespace NoiseMapServerAsp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddEntityFrameworkSqlite().AddDbContext<ApplicationContext>();
+            services.AddEntityFrameworkSqlite().AddDbContext<ApplicationContext>();
 
-            //services.AddIdentity<User, IdentityRole>(options => {
-            //    options.Password.RequireDigit = false;
-            //    options.Password.RequiredLength = 0;
-            //    options.Password.RequireNonAlphanumeric = false;
-            //    options.Password.RequireUppercase = false;
-            //    options.Password.RequireLowercase = false;
-            //})
-            //    .AddEntityFrameworkStores<ApplicationContext>();
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 0;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+                .AddEntityFrameworkStores<ApplicationContext>();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-               .AddCookie(x => x.LoginPath = "/account/login");
-
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+                options.LoginPath = "/account/login";
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+                options.SlidingExpiration = true;
+            });
             services.AddSingleton<AudioRepository>();
             services.AddControllersWithViews();
             services.AddSingleton<AudioRepository>();
