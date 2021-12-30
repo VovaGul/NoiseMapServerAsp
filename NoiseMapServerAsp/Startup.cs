@@ -25,16 +25,16 @@ namespace NoiseMapServerAsp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkSqlite().AddDbContext<ApplicationContext>();
+            //services.AddEntityFrameworkSqlite().AddDbContext<ApplicationContext>();
 
-            services.AddIdentity<User, IdentityRole>(options => {
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 0;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-            })
-                .AddEntityFrameworkStores<ApplicationContext>();
+            //services.AddIdentity<User, IdentityRole>(options => {
+            //    options.Password.RequireDigit = false;
+            //    options.Password.RequiredLength = 0;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //    options.Password.RequireUppercase = false;
+            //    options.Password.RequireLowercase = false;
+            //})
+            //    .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                .AddCookie(x => x.LoginPath = "/account/login");

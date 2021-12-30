@@ -9,7 +9,7 @@ namespace NoiseMapServerAsp.Controllers
 {
     public class HomeController : Controller
     {
-        //[Authorize]
+        [Authorize]
         public IActionResult Index()
         {
             var a = HttpContext.User.Claims;

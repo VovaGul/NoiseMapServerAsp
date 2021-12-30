@@ -25,7 +25,7 @@ namespace NoiseMapServerAsp
                 .Build();
             try
             {
-                SetDefaultSeed(host);
+                //SetDefaultSeed(host);
                 host.Run();
             }
             catch (Exception ex)
