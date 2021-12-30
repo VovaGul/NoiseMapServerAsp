@@ -1,7 +1,10 @@
 using DAL;
+using DAL.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,8 +27,20 @@ namespace NoiseMapServerAsp
         {
             services.AddEntityFrameworkSqlite().AddDbContext<ApplicationContext>();
 
+            services.AddIdentity<User, IdentityRole>(options => {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 0;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+                .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+               .AddCookie(x => x.LoginPath = "/account/login");
+
             services.AddSingleton<AudioRepository>();
-            services.AddControllers();
+            services.AddControllersWithViews();
             services.AddSingleton<AudioRepository>();
 
             services.AddSignalR();
@@ -38,14 +53,20 @@ namespace NoiseMapServerAsp
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseDefaultFiles();
+            //app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(
+                   name: "default",
+                   pattern: "{controller=Home}/{action=Index}/{id?}"
+                   );
                 endpoints.MapHub<ClientConnectionHub>("/update");
             });
         }

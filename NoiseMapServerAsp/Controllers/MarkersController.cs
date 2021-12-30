@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using NoiseMapServerAsp.Hubs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NoiseMapServerAsp.Controllers
 {
@@ -80,6 +82,7 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize]
         public Marker PostMarker(Marker marker)
         {
             var createdMarker = _applicationContext.Markers.Add(marker).Entity;
@@ -88,6 +91,7 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPut("edit")]
+        [Authorize]
         public void UpdateMarker(Marker marker)
         {
             _applicationContext.Markers.Update(marker);
@@ -95,6 +99,7 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public void DeleteMarker(int id)
         {
             Marker marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();
