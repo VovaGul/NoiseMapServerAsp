@@ -252,8 +252,8 @@ class MapboxManager {
         this.map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/light-v10',
-            center: [-96, 37.8],
-            zoom: 3
+            center: [60.6, 56.84],
+            zoom: 12
         });
 
         this.mapFeatureRepository = new MapFeatureRepository(this.map, this)
