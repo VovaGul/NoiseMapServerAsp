@@ -1,5 +1,6 @@
 var currentFeature
 var currentMarker
+var allMarkers = {};
 
 class FeatureType {
     static empty = "Empty"
@@ -94,10 +95,13 @@ class ServerFeatureRepository {
         let response = await fetch("https://localhost:44395/api/markers/add", requestOptions)
         let answerMarker = await response.json();
         var answerFeature = this.markerToFeature(answerMarker)
+
+        await connection.invoke("OnMarkerAdded", answerFeature.markerId);
+
         return answerFeature
     }
 
-    updateFeature(feature) {
+    async updateFeature(feature) {
         var marker = this.featureToMarker(feature)
 
         var myHeaders = new Headers();
@@ -112,16 +116,30 @@ class ServerFeatureRepository {
             redirect: 'follow'
         };
 
-        fetch("https://localhost:44395/api/markers/edit", requestOptions)
+        let response = await fetch("https://localhost:44395/api/markers/edit", requestOptions)
+        await connection.invoke("OnMarkerUpdated", feature.markerId);
     }
 
-    delete(feature) {
+    async delete(feature) {
         var requestOptions = {
             method: 'DELETE',
             redirect: 'follow'
         };
 
-        fetch("https://localhost:44395/api/markers/delete/" + feature.markerId, requestOptions)
+        let response = await fetch("https://localhost:44395/api/markers/delete/" + feature.markerId, requestOptions)
+        await connection.invoke("OnMarkerDeleted", feature.markerId);
+    }
+
+    async getFeature(markerId) {
+        var requestOptions = {
+            method: 'GET',
+            redirect: 'follow',
+        };
+
+        let response = await fetch("https://localhost:44395/api/markers/" + markerId, requestOptions);
+        let marker = await response.json();
+        var answerFeature = this.markerToFeature(marker)
+        return answerFeature
     }
 }
 
@@ -164,6 +182,9 @@ class MapFeatureRepository {
             popupHTML = popupHTML + listenButtonHTML + rejectButtonHTML
         }
         popupHTML = popupHTML + deleteButtonHTML
+
+       
+        allMarkers[feature.markerId] = marker
 
         marker
             .setLngLat(feature.coordinates)
@@ -282,6 +303,45 @@ const serverFeatureRepository = new ServerFeatureRepository()
 const mapboxManager = new MapboxManager(serverFeatureRepository)
 
 mapboxManager.run()
+
+const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/update")
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+
+async function start() {
+    try {
+        await connection.start()
+        console.log("SignalR Connected.");
+    } catch (err) {
+        console.log(err);
+        setTimeout(start, 5000);
+    }
+};
+
+connection.onclose(async () => {
+    await start();
+});
+
+connection.on("UpdateMarker", (markerId) => {
+    serverFeatureRepository.getFeature(markerId).then((feature) => {
+        allMarkers[markerId].remove()
+        mapboxManager.mapFeatureRepository.setFeature(feature)
+    })
+});
+
+connection.on("DeleteMarker", (markerId) => {
+    allMarkers[markerId].remove()
+});
+
+connection.on("AddMarker", (markerId) => {
+    serverFeatureRepository.getFeature(markerId).then((feature) => {
+        mapboxManager.mapFeatureRepository.setFeature(feature)
+    })
+});
+
+// Start the connection.
+start();
 
 function setEmptyFeature() {
     mapboxManager.setEmptyFeature()
