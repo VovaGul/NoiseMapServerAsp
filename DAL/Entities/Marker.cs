@@ -13,6 +13,7 @@ namespace DAL.Entities
         public String Y { get; set; }
         public MarkerType MarkerType { get; set; }
         public String Title { get; set; }
+        public int Value { get; set; }
         public AudioStatus AudioStatus { get; set; }
     }
 }

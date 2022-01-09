@@ -33,15 +33,16 @@ class ServerFeatureRepository {
         return features
     }
 
-    markerToFeature(marker) {
-        var markerType = this.intToFeatureType(marker.markerType)
+    markerToFeature(markerEntity) {
+        var markerType = this.intToFeatureType(markerEntity.markerType)
 
         return {
-            markerId: marker.id,
-            coordinates: [marker.x, marker.y],
+            markerId: markerEntity.id,
+            coordinates: [markerEntity.x, markerEntity.y],
             type: markerType,
-            audioStatus: marker.audioStatus,
-            title: marker.title
+            audioStatus: markerEntity.audioStatus,
+            title: markerEntity.title,
+            marker: markerEntity
         }
     }
 
@@ -169,6 +170,8 @@ class MapFeatureRepository {
             currentFeature = feature
             currentMarker = marker
         });
+
+        markerElement.innerHTML = feature.marker.value
 
         const listenButtonHTML = '<h3><button type="button" onclick="listenCurrentFeature()">Прослушать</button></h3>'
         const acceptButtonHTML = '<h3><button type="button" onclick="acceptCurrentFeature()">Принять</button></h3>'
