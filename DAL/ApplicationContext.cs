@@ -33,7 +33,7 @@ namespace DAL
                     MarkerType = MarkerType.Empty,
                     X = "-121.09702256272297",
                     Y = "37.40292274053587",
-                    Title = "Cinema",
+                    Title = "Cinema1",
                     Value = 55,
                     AudioStatus = AudioStatus.Unrecorded
                 },
@@ -42,7 +42,7 @@ namespace DAL
                     MarkerType = MarkerType.Checked,
                     X = "-121.09702256272297",
                     Y = "30.40292274053587",
-                    Title = "Cinema",
+                    Title = "Cinema2",
                     Value = 90,
                     AudioStatus = AudioStatus.Recorded
                 }

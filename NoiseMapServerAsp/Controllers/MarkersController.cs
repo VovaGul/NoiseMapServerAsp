@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NoiseMapServerAsp.Hubs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace NoiseMapServerAsp.Controllers
 {
@@ -21,11 +22,14 @@ namespace NoiseMapServerAsp.Controllers
         private readonly ApplicationContext _applicationContext;
         protected readonly IWebHostEnvironment _hostingEnvironment;
         private readonly AudioRepository _audioRepository;
+        private readonly IHubContext<ClientConnectionHub> _hubContext;
 
-        public MarkersController(ApplicationContext applicationContext, IWebHostEnvironment hostingEnvironment, AudioRepository audioRepository)
+        public MarkersController(ApplicationContext applicationContext, AudioRepository audioRepository, IHubContext<ClientConnectionHub> hubContext)
         {
             _applicationContext = applicationContext;
             _audioRepository = audioRepository;
+            _hubContext = hubContext;
+
         }
 
         //GET api/markers/all
@@ -83,30 +87,33 @@ namespace NoiseMapServerAsp.Controllers
 
         [HttpPost("add")]
         [Authorize]
-        public Marker PostMarker(Marker marker)
+        public async Task<Marker> PostMarker(Marker marker)
         {
             var createdMarker = _applicationContext.Markers.Add(marker).Entity;
             _applicationContext.SaveChanges();
+            await _hubContext.Clients.All.SendAsync("AddMarker", marker.Id);
             return createdMarker;
         }
 
         [HttpPut("edit")]
         [Authorize]
-        public void UpdateMarker(Marker marker)
+        public async Task UpdateMarker(Marker marker)
         {
             _applicationContext.Markers.Update(marker);
             _applicationContext.SaveChanges();
+            await _hubContext.Clients.All.SendAsync("UpdateMarker", marker.Id);
         }
 
         [HttpDelete("delete/{id}")]
         [Authorize]
-        public void DeleteMarker(int id)
+        public async Task DeleteMarker(int id)
         {
             Marker marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();
             if (marker != null)
             {
                 _applicationContext.Markers.Remove(marker);
                 _applicationContext.SaveChanges();
+                await _hubContext.Clients.All.SendAsync("DeleteMarker", marker.Id);
             }
             
         }
