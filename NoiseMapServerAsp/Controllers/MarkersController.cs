@@ -10,6 +10,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using NoiseMapServerAsp.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -62,7 +64,7 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPost("audio/add")]
-        public async void PostAudio()
+        public async Task PostAudio()
         {
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
@@ -96,9 +98,9 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPut("edit")]
-        [Authorize]
         public async Task UpdateMarker(Marker marker)
         {
+            Console.WriteLine(marker.Volume.ToString());
             _applicationContext.Markers.Update(marker);
             _applicationContext.SaveChanges();
             await _hubContext.Clients.All.SendAsync("UpdateMarker", marker.Id);

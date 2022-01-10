@@ -15,7 +15,7 @@ class ServerFeatureRepository {
             redirect: 'follow',
         };
 
-        let response = await fetch("https://localhost:44395/api/markers/all", requestOptions);
+        let response = await fetch("https://localhost:5001/api/markers/all", requestOptions);
         let markers = await response.json();
 
         let features = this.markersToFeatures(markers)
@@ -93,7 +93,7 @@ class ServerFeatureRepository {
             redirect: 'follow'
         };
 
-        let response = await fetch("https://localhost:44395/api/markers/add", requestOptions)
+        let response = await fetch("https://localhost:5001/api/markers/add", requestOptions)
         let answerMarker = await response.json();
         var answerFeature = this.markerToFeature(answerMarker)
 
@@ -171,7 +171,7 @@ class MapFeatureRepository {
             currentMarker = marker
         });
 
-        markerElement.innerHTML = feature.marker.value
+        markerElement.innerHTML = feature.marker.volume
 
         const listenButtonHTML = '<h3><button type="button" onclick="listenCurrentFeature()">Прослушать</button></h3>'
         const acceptButtonHTML = '<h3><button type="button" onclick="acceptCurrentFeature()">Принять</button></h3>'
@@ -280,7 +280,7 @@ class MapboxManager {
     }
 
     listenCurrentFeature() {
-        var audio = new Audio("https://localhost:44395/api/markers/audio/" + currentFeature.markerId);
+        var audio = new Audio("https://localhost:5001/api/markers/audio/" + currentFeature.markerId);
         audio.play();
     }
 
