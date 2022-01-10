@@ -168,7 +168,9 @@ class MapFeatureRepository {
             currentMarker = marker
         });
 
-        markerElement.innerHTML = feature.marker.volume
+        if (feature.marker.volume != "0") {
+            markerElement.innerHTML = feature.marker.volume
+        }
 
         const listenButtonHTML = '<h3><button type="button" onclick="listenCurrentFeature()">Прослушать</button></h3>'
         const acceptButtonHTML = '<h3><button type="button" onclick="acceptCurrentFeature()">Принять</button></h3>'
@@ -266,9 +268,13 @@ class MapboxManager {
         this.map.getCanvas().style.cursor = 'pointer';
 
         this.map.once('click', (e) => {
+            const setMarker = {
+                volume: 0
+            }
             const feature = {
                 coordinates: [e.lngLat.lng, e.lngLat.lat],
-                type: FeatureType.empty
+                type: FeatureType.empty,
+                marker: setMarker
             };
 
             this.featureRepository.setFeature(feature)
@@ -289,6 +295,7 @@ class MapboxManager {
 
     rejectCurrentFeature() {
         currentFeature.type = FeatureType.empty
+        currentFeature.marker.volume = 0
         this.featureRepository.updateFeature(currentFeature)
     }
 

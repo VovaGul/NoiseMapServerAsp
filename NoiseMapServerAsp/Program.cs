@@ -51,9 +51,7 @@ namespace NoiseMapServerAsp
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
             var applicationContext = services.GetRequiredService<ApplicationContext>();
-            applicationContext.Database.EnsureDeleted();
             applicationContext.Database.EnsureCreated();
-            applicationContext.SetDefaultSeed();
 
 
             var userManager = services.GetRequiredService<UserManager<User>>();
