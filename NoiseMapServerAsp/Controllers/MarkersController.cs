@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using NoiseMapServerAsp.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
 
 namespace NoiseMapServerAsp.Controllers
 {
@@ -61,7 +62,7 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPost("audio/add")]
-        public async void PostAudio()
+        public async Task PostAudio()
         {
             var files = HttpContext.Request.Form.Files;
             if (files.Count > 0)
@@ -85,23 +86,25 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPost("add")]
+        [Authorize]
         public async Task PostMarker(Marker marker)
         {
             var createdMarker = _applicationContext.Markers.Add(marker).Entity;
             _applicationContext.SaveChanges();
             await _hubContext.Clients.All.SendAsync("AddMarker", marker.Id);
-            //return createdMarker;
         }
 
         [HttpPut("edit")]
         public async Task UpdateMarker(Marker marker)
         {
+            Console.WriteLine(marker.Volume.ToString());
             _applicationContext.Markers.Update(marker);
             _applicationContext.SaveChanges();
             await _hubContext.Clients.All.SendAsync("UpdateMarker", marker.Id);
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public async Task DeleteMarker(int id)
         {
             Marker marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();

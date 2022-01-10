@@ -1,11 +1,12 @@
 ﻿using DAL.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DAL
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationContext : IdentityDbContext<User>
     {
         public DbSet<Marker> Markers { get; set; }
 
@@ -24,6 +25,7 @@ namespace DAL
                     X = "-122.09702256272297",
                     Y = "37.40292274053587",
                     Title = "Panda Express",
+                    Volume = 30,
                     AudioStatus = AudioStatus.Recorded
                 },
                 new Marker
@@ -32,6 +34,7 @@ namespace DAL
                     X = "-121.09702256272297",
                     Y = "37.40292274053587",
                     Title = "Cinema1",
+                    Volume = 40,
                     AudioStatus = AudioStatus.Unrecorded
                 },
                 new Marker
@@ -40,6 +43,7 @@ namespace DAL
                     X = "-121.09702256272297",
                     Y = "30.40292274053587",
                     Title = "Cinema2",
+                    Volume = 50,
                     AudioStatus = AudioStatus.Unrecorded
                 }
             };

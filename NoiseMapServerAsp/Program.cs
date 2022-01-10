@@ -1,6 +1,7 @@
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -53,6 +54,11 @@ namespace NoiseMapServerAsp
             applicationContext.Database.EnsureDeleted();
             applicationContext.Database.EnsureCreated();
             applicationContext.SetDefaultSeed();
+
+
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var user = new User { UserName = "123", Email = "123" };
+            var result = Task.Run(async () => await userManager.CreateAsync(user, "123")).Result;
         }
     }
 }

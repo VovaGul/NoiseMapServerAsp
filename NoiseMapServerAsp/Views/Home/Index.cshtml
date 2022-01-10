@@ -1,0 +1,18 @@
+﻿@{
+        ViewData["Title"] = "Index";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+
+<div id='map'></div>
+
+<div class="map-overlay top">
+    <div class="map-overlay-inner">
+        <fieldset>
+            <button id="setEmptyPointButton" type="button" onclick="setEmptyFeature()">установить пустую точку</button>
+            <a asp-controller="Account" asp-action="Logout" type="button">Logout</a>
+        </fieldset>
+    </div>
+</div>
+
+<script type="text/javascript" src="javascript/script.js" defer></script>
