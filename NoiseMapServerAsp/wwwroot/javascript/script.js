@@ -15,7 +15,7 @@ class ServerFeatureRepository {
             redirect: 'follow',
         };
 
-        let response = await fetch("https://localhost:5001/api/markers/all", requestOptions);
+        let response = await fetch("/api/markers/all", requestOptions);
         let markers = await response.json();
 
         let features = this.markersToFeatures(markers)
@@ -75,7 +75,8 @@ class ServerFeatureRepository {
             y: feature.coordinates[1].toString(),
             markerType: markerTypeValue,
             title: feature.title,
-            audioStatus: feature.audioStatus
+            audioStatus: feature.audioStatus,
+            volume: feature.marker.volume
         }
     }
 
@@ -93,11 +94,9 @@ class ServerFeatureRepository {
             redirect: 'follow'
         };
 
-        let response = await fetch("https://localhost:5001/api/markers/add", requestOptions)
+        let response = await fetch("/api/markers/add", requestOptions)
         let answerMarker = await response.json();
         var answerFeature = this.markerToFeature(answerMarker)
-
-        await connection.invoke("OnMarkerAdded", answerFeature.markerId);
 
         return answerFeature
     }
@@ -117,8 +116,7 @@ class ServerFeatureRepository {
             redirect: 'follow'
         };
 
-        let response = await fetch("https://localhost:44395/api/markers/edit", requestOptions)
-        await connection.invoke("OnMarkerUpdated", feature.markerId);
+        let response = await fetch("/api/markers/edit", requestOptions)
     }
 
     async delete(feature) {
@@ -127,8 +125,7 @@ class ServerFeatureRepository {
             redirect: 'follow'
         };
 
-        let response = await fetch("https://localhost:44395/api/markers/delete/" + feature.markerId, requestOptions)
-        await connection.invoke("OnMarkerDeleted", feature.markerId);
+        let response = await fetch("/api/markers/delete/" + feature.markerId, requestOptions)
     }
 
     async getFeature(markerId) {
@@ -137,7 +134,7 @@ class ServerFeatureRepository {
             redirect: 'follow',
         };
 
-        let response = await fetch("https://localhost:44395/api/markers/" + markerId, requestOptions);
+        let response = await fetch("/api/markers/" + markerId, requestOptions);
         let marker = await response.json();
         var answerFeature = this.markerToFeature(marker)
         return answerFeature
@@ -280,7 +277,7 @@ class MapboxManager {
     }
 
     listenCurrentFeature() {
-        var audio = new Audio("https://localhost:5001/api/markers/audio/" + currentFeature.markerId);
+        var audio = new Audio("/api/markers/audio/" + currentFeature.markerId);
         audio.play();
     }
 
@@ -292,7 +289,6 @@ class MapboxManager {
 
     rejectCurrentFeature() {
         currentFeature.type = FeatureType.empty
-
         this.featureRepository.updateFeature(currentFeature)
     }
 
