@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using NoiseMapServerAsp.Hubs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace NoiseMapServerAsp.Controllers
@@ -85,15 +86,17 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpPost("add")]
-        public async Task PostMarker(Marker marker)
+        [Authorize]
+        public async Task<Marker> PostMarker(Marker marker)
         {
             var createdMarker = _applicationContext.Markers.Add(marker).Entity;
             _applicationContext.SaveChanges();
             await _hubContext.Clients.All.SendAsync("AddMarker", marker.Id);
-            //return createdMarker;
+            return createdMarker;
         }
 
         [HttpPut("edit")]
+        [Authorize]
         public async Task UpdateMarker(Marker marker)
         {
             _applicationContext.Markers.Update(marker);
@@ -102,6 +105,7 @@ namespace NoiseMapServerAsp.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize]
         public async Task DeleteMarker(int id)
         {
             Marker marker = _applicationContext.Markers.Where(marker => marker.Id == id).Single();
