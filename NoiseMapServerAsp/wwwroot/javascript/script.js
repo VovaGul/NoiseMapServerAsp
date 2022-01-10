@@ -171,7 +171,7 @@ class MapFeatureRepository {
             currentMarker = marker
         });
 
-        markerElement.innerHTML = feature.marker.value
+        markerElement.innerHTML = feature.marker.volume
 
         const listenButtonHTML = '<h3><button type="button" onclick="listenCurrentFeature()">Прослушать</button></h3>'
         const acceptButtonHTML = '<h3><button type="button" onclick="acceptCurrentFeature()">Принять</button></h3>'

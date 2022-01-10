@@ -89,7 +89,7 @@ namespace NoiseMapServerAsp.Controllers
 
         [HttpPost("add")]
         [Authorize]
-        public async Task PostMarker(Marker marker)
+        public async Task<Marker> PostMarker(Marker marker)
         {
             var createdMarker = _applicationContext.Markers.Add(marker).Entity;
             _applicationContext.SaveChanges();
