@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using NoiseMapServerAsp.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace NoiseMapServerAsp.Controllers
 {
@@ -92,6 +94,7 @@ namespace NoiseMapServerAsp.Controllers
             var createdMarker = _applicationContext.Markers.Add(marker).Entity;
             _applicationContext.SaveChanges();
             await _hubContext.Clients.All.SendAsync("AddMarker", marker.Id);
+            return createdMarker;
         }
 
         [HttpPut("edit")]
