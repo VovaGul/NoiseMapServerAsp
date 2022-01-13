@@ -337,13 +337,13 @@ connection.on("UpdateMarker", (markerId) => {
 });
 
 connection.on("DeleteMarker", (markerId) => {
-    allMarkers[markerId].remove()
+ /*   allMarkers[markerId].remove()*/
 });
 
 connection.on("AddMarker", (markerId) => {
-    serverFeatureRepository.getFeature(markerId).then((feature) => {
-        mapboxManager.mapFeatureRepository.setFeature(feature)
-    })
+    //serverFeatureRepository.getFeature(markerId).then((feature) => {
+    //    mapboxManager.mapFeatureRepository.setFeature(feature)
+    //})
 });
 
 // Start the connection.
